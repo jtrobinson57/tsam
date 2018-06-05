@@ -95,7 +95,7 @@ def aggregatePeriods(candidates, n_clusters=8,
         Only required for the number of starts of the k-mean algorithm.
     clusterMethod: str, optional (default: 'k_means')
         Chosen clustering algorithm. Possible values are
-        'averaging','k_means','exact k_medoid' or 'hierarchical'
+        'k_shape','averaging','k_means','exact k_medoid' or 'hierarchical'
     '''
 
     if clusterMethod == 'hierarchical':
@@ -160,7 +160,14 @@ def aggregatePeriods(candidates, n_clusters=8,
             mindistIdx = np.argmin(innerDistMatrix.sum(axis=0))
             clusterCenters.append(candidates[indice][mindistIdx])
             clusterCenterIndices.append(indice[0][mindistIdx])
-
+            
+    elif clusterMethod == 'k_shape':
+        from kshape.core import kshape, zscore
+        kshapeClusters = kshape(zscore(candidates, axis=1), n_clusters)
+        clusterCenters = {x[0] for x in kshapeClusters}
+        clusterCenterIndices = {y[1] for y in kshapeClusters}
+        
+        
     return clusterCenters, clusterCenterIndices, clusterOrder
 
 
@@ -168,7 +175,7 @@ class TimeSeriesAggregation(object):
     '''
     Clusters time series data to typical periods.
     '''
-    CLUSTER_METHODS = ['averaging', 'k_medoids', 'k_means', 'hierarchical']
+    CLUSTER_METHODS = ['averaging', 'k_medoids', 'k_means', 'hierarchical','k_shape']
 
     EXTREME_PERIOD_METHODS = [
         'None',
@@ -506,7 +513,7 @@ class TimeSeriesAggregation(object):
         clusterCenters: dict, required
             Output from clustering with sklearn.
         clusterOrder: dict, required
-            Output from clsutering with sklearn.
+            Output from clustering with sklearn.
         extremePeriodMethod: str, optional(default: 'new_cluster_center' )
             Chosen extremePeriodMethod. The method
 
