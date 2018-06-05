@@ -162,11 +162,20 @@ def aggregatePeriods(candidates, n_clusters=8,
             clusterCenterIndices.append(indice[0][mindistIdx])
             
     elif clusterMethod == 'k_shape':
+        
         from kshape.core import kshape, zscore
+        
         kshapeClusters = kshape(zscore(candidates, axis=1), n_clusters)
         clusterCenters = {x[0] for x in kshapeClusters}
         clusterCenterIndices = {y[1] for y in kshapeClusters}
         
+        i = 0
+        
+        for i in clusterCenters[i]:
+            j = 0
+            for j in kshapeClusters[1]:
+                pass
+            clusterOrder[i] = j
         
     return clusterCenters, clusterCenterIndices, clusterOrder
 
