@@ -170,12 +170,15 @@ def aggregatePeriods(candidates, n_clusters=8,
         clusterCenterIndices = [y[1] for y in kshapeClusters]
         
         i = 0
+        k = 0
         
-        for i in clusterCenters[i]:
+        for i in kshapeClusters:
             j = 0
-            for j in kshapeClusters[1]:
-                pass
-            clusterOrder[i] = j
+            for j in i[1]:
+                clusterOrder[i] = k
+            k = k + 1
+        
+        clusterOrder = clusterOrder.astype(int)
         
     return clusterCenters, clusterCenterIndices, clusterOrder
 
