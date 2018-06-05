@@ -166,8 +166,8 @@ def aggregatePeriods(candidates, n_clusters=8,
         from kshape.core import kshape, zscore
         
         kshapeClusters = kshape(zscore(candidates, axis=1), n_clusters)
-        clusterCenters = {x[0] for x in kshapeClusters}
-        clusterCenterIndices = {y[1] for y in kshapeClusters}
+        clusterCenters = [x[0] for x in kshapeClusters]
+        clusterCenterIndices = [y[1] for y in kshapeClusters]
         
         i = 0
         
